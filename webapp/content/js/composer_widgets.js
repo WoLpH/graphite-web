@@ -47,6 +47,7 @@ function createComposerWindow(myComposer) {
   var win = new Ext.Window({
     width: DEFAULT_WINDOW_WIDTH,
     height: DEFAULT_WINDOW_HEIGHT,
+    maximized: true,
     title: "Graphite Composer",
     layout: "border",
     region: "center",
