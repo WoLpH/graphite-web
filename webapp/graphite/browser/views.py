@@ -211,26 +211,28 @@ def userGraphLookup(request):
                 if nodeName in inserted:
                     continue
                 inserted.add(nodeName)
-
                 if '.' in relativePath:  # branch
-                    node = {'text': str(nodeName), 'id': str(username + '.'
-                         + prefix + nodeName + '.')}
+                    node = {
+                        'text': str(nodeName),
+                        'id': str(username + '.' + prefix + nodeName + '.'),
+                    }
                     node.update(branchNode)
+
                 else:
-
-              # leaf
-
+                    # leaf
                     m = hashlib.md5()
                     m.update(nodeName)
                     md5 = m.hexdigest()
 
-                    node = {'text': str(nodeName), 'id': str(username + '.'
-                         + prefix + md5), 'graphUrl': str(graph.url)}
+                    node = {
+                        'text': str(nodeName),
+                        'id': str(username + '.' + prefix + md5),
+                        'graphUrl': str(graph.url),
+                    }
                     node.update(leafNode)
 
                 nodes.append(node)
     except:
-
         log.exception(
             'browser.views.userLookup(): could not complete request for %s'
              % username)
