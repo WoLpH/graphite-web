@@ -17,22 +17,27 @@ from django.conf import settings
 from django.contrib import admin
 
 admin.autodiscover()
+import os
+ADMIN_MEDIA_ROOT = os.path.abspath(os.path.join(admin.__file__, '..', 'media'))
 
 urlpatterns = patterns('',
-  ('^admin/', include(admin.site.urls)),
-  ('^render/?', include('graphite.render.urls')),
-  ('^cli/?', include('graphite.cli.urls')),
-  ('^composer/?', include('graphite.composer.urls')),
-  ('^metrics/?', include('graphite.metrics.urls')),
-  ('^browser/?', include('graphite.browser.urls')),
-  ('^account/?', include('graphite.account.urls')),
-  ('^dashboard/?', include('graphite.dashboard.urls')),
-  ('^whitelist/?', include('graphite.whitelist.urls')),
-  ('^content/(?P<path>.*)$', 'django.views.static.serve', {'document_root' : settings.CONTENT_DIR}),
-  ('graphlot/', include('graphite.graphlot.urls')),
-  ('^version/', include('graphite.version.urls')),
-  ('^events/', include('graphite.events.urls')),
-  ('', 'graphite.browser.views.browser'),
+    ('^admin/media/(?P<path>.*)$', 'django.views.static.serve', {
+      'document_root': ADMIN_MEDIA_ROOT}),
+    ('^admin/', include(admin.site.urls)),
+    ('^render/?', include('graphite.render.urls')),
+    ('^cli/?', include('graphite.cli.urls')),
+    ('^composer/?', include('graphite.composer.urls')),
+    ('^metrics/?', include('graphite.metrics.urls')),
+    ('^browser/?', include('graphite.browser.urls')),
+    ('^account/?', include('graphite.account.urls')),
+    ('^dashboard/?', include('graphite.dashboard.urls')),
+    ('^whitelist/?', include('graphite.whitelist.urls')),
+    ('^content/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root' : settings.CONTENT_DIR}),
+    ('graphlot/', include('graphite.graphlot.urls')),
+    ('^version/', include('graphite.version.urls')),
+    ('^events/', include('graphite.events.urls')),
+    ('', 'graphite.browser.views.browser'),
 )
 
 handler500 = 'graphite.views.server_error'
