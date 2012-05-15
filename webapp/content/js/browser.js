@@ -54,6 +54,7 @@ function createTreePanel(){
   var graphiteNode = new Ext.tree.AsyncTreeNode({
     id: 'GraphiteTree',
     text: "Graphite",
+    expanded: true,
     loader: new Ext.tree.TreeLoader({
       url: "../metrics/find/",
       requestMethod: "GET",
@@ -75,6 +76,7 @@ function createTreePanel(){
       leaf: false,
       allowChildren: true,
       expandable: true,
+      expanded: true,
       allowDrag: false,
       //listeners: {beforeexpand: reloadOnce},
       loader: new Ext.tree.TreeLoader({
@@ -89,6 +91,7 @@ function createTreePanel(){
   var userGraphsNode = new Ext.tree.AsyncTreeNode({
     id: 'UserGraphsTree',
     text: "User Graphs",
+    expanded: true,
     //listeners: {beforeexpand: reloadOnce},
     loader: new Ext.tree.TreeLoader({
       url: "../browser/usergraph/",
