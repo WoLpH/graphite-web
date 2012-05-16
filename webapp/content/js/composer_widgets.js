@@ -751,9 +751,8 @@ var GraphDataWindow = {
     win = new Ext.Window({
       title: "Add a new Graph Target",
       id: 'addTargetWindow',
-      modal: true,
-      width: 400,
-      height: 115,
+      width: 800,
+      height: 150,
       layout: {
         type: 'vbox',
         align:'stretch',
@@ -855,9 +854,8 @@ var GraphDataWindow = {
     win = new Ext.Window({
       title: "Edit Graph Target",
       id: 'editTargetWindow',
-      modal: true,
-      width: 400,
-      height: 115,
+      width: 800,
+      height: 150,
       layout: {
         type: 'vbox',
         align:'stretch',
