@@ -39,19 +39,64 @@ function createComposerWindow(myComposer) {
   }
 
   var bottomToolbar = [
-    { text: "Graph Options", menu: createOptionsMenu() },
-    { text: "Graph Data", handler: toggleWindow(GraphDataWindow.create.createDelegate(GraphDataWindow)) },
-    { text: "Auto-Refresh", id: 'autorefresh_button', enableToggle: true, toggleHandler: toggleAutoRefresh }
+    {
+        text: "Graph Options",
+        menu: createOptionsMenu()
+    },
+    {
+        text: "Graph Data",
+        handler: toggleWindow(GraphDataWindow.create.createDelegate(GraphDataWindow))
+    },
+    {
+        text: "Auto-Refresh",
+        id: 'autorefresh_button',
+        enableToggle: true,
+        toggleHandler: toggleAutoRefresh
+    },
+    '-',
+    {
+      xtype: 'button',
+      text: '14 days',
+      handler: function(){
+        setRecentSelection(14, 'days');
+      }
+    },
+    {
+      xtype: 'button',
+      text: '7 days',
+      handler: function(){
+        setRecentSelection(7, 'days');
+      }
+    },
+    {
+      xtype: 'button',
+      text: '1 day',
+      handler: function(){
+        setRecentSelection(1, 'days');
+      }
+    },
+    {
+      xtype: 'button',
+      text: '6 hours',
+      handler: function(){
+        setRecentSelection(6, 'hours');
+      }
+    },
+    {
+      xtype: 'button',
+      text: '1 hour',
+      handler: function(){
+        setRecentSelection(1, 'hours');
+      }
+    }
   ];
 
   var win = new Ext.Window({
-    width: DEFAULT_WINDOW_WIDTH,
-    height: DEFAULT_WINDOW_HEIGHT,
     maximized: true,
     title: "Graphite Composer",
     layout: "border",
     region: "center",
-    maximizable: true,
+    maximizable: false,
     closable: false,
     tbar: topToolbar,
     buttons: bottomToolbar,
@@ -281,14 +326,12 @@ function createRecentWindow() {
   return new Ext.Window({
     title: "Select a Recent Time Range",
     layout: 'table',
-    height: 60, //there's gotta be a way to auto-size these windows!
-    width: 235,
     layoutConfig: { columns: 3 },
     closeAction: 'hide',
     items: [
       {
-        html: "<div style=\"border: none; background-color: rgb(223,232,246)\">View the past</div>",
-        style: "border: none; background-color: rgb(223,232,246)"
+        xtype: 'label',
+        html: 'View the past: ',
       },
       quantityField,
       unitSelector
@@ -296,9 +339,7 @@ function createRecentWindow() {
   });
 }
 
-function recentSelectionMade(combo, record, index) {
-  var quantity = Ext.getCmp('time-quantity').getValue();
-  var units = Ext.getCmp('time-units').getValue();
+function setRecentSelection(quantity, units){
   var fromString = '-' + quantity + units;
   Composer.url.setParam('from', fromString);
   Composer.url.removeParam('until');
@@ -308,6 +349,12 @@ function recentSelectionMade(combo, record, index) {
     quantity: quantity,
     units: units
   });
+}
+
+function recentSelectionMade(combo, record, index) {
+  var quantity = Ext.getCmp('time-quantity').getValue();
+  var units = Ext.getCmp('time-units').getValue();
+  setRecentSelection(quantity, units);
 }
 
 /* "Save to MyGraphs" */
@@ -829,9 +876,9 @@ var GraphDataWindow = {
         }, {
           xtype: 'button',
           text: 'Cancel',
-          handler: function () {
-                     win.close();
-                   }
+          handler: function(){
+            win.close();
+          }
         }
       ]
     });
