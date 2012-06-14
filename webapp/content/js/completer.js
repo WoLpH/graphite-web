@@ -1,58 +1,69 @@
 var MetricCompleter;
 
-MetricCompleter = Ext.extend(Ext.form.ComboBox, {
-  displayField: 'path',
-  listEmptyText: 'No matching metrics',
-  mode: 'remote',
-  hideTrigger: true,
-  queryDelay: 100,
-  queryParam: 'query',
-  typeAhead: false,
-  minChars: 1,
+MetricCompleter = Ext.extend(Ext.form.TextArea, {
+    displayField: 'path',
+    listEmptyText: 'No matching metrics',
+    mode: 'remote',
+    hideTrigger: true,
+    queryDelay: 100,
+    queryParam: 'query',
+    typeAhead: false,
+    minChars: 1,
 
-  initComponent: function () {
-    var _this = this;
+    initComponent: function () {
+        var _this = this;
 
-    var store = new Ext.data.JsonStore({
-      url: '../metrics/find/',
-      root: 'metrics',
-      fields: ['path', 'name'],
-      baseParams: {format: 'completer'}
-    });
+        var store = new Ext.data.JsonStore({
+        url: '../metrics/find/',
+        root: 'metrics',
+        fields: ['path', 'name'],
+        baseParams: {format: 'completer'}
+        });
 
-    var config = {store: store};
+        var config = {store: store};
 
-    Ext.apply(this, config);
-    Ext.apply(this.initialConfig, config);
+        Ext.apply(this, config);
+        Ext.apply(this.initialConfig, config);
 
-    MetricCompleter.superclass.initComponent.call(this);
+        MetricCompleter.superclass.initComponent.call(this);
 
-    this.addListener('beforequery', this.prepareQuery.createDelegate(this));
-    this.addListener('specialkey', this.onSpecialKey.createDelegate(this));
-    this.addListener('afterrender',
-      function () {
-        _this.getEl().addListener('specialkey',
-          function (el, e) {
-            _this.onSpecialKey(_this.getEl(), e);
-          }
+        this.addListener('beforequery', this.prepareQuery.createDelegate(this));
+        this.addListener('specialkey', this.onSpecialKey.createDelegate(this));
+        this.addListener('afterrender',
+        function () {
+            _this.getEl().addListener('specialkey',
+            function (el, e) {
+                _this.onSpecialKey(_this.getEl(), e);
+            }
+            );
+        }
         );
-      }
-    );
-  },
+    },
 
-  prepareQuery: function (queryEvent) {
-    queryEvent.query += '*';
-  },
+    prepareQuery: function (queryEvent) {
+        queryEvent.query += '*';
+    },
 
-  onSpecialKey: function (field, e) {
-    if (e.getKey() == e.TAB) { // This was a pain in the ass to actually get it working right
-      field.getEl().blur();
-      field.getEl().focus(50);
-      field.doQuery( field.getValue() );
-      e.stopEvent();
-      return false;
+    onSpecialKey: function (field, e) {
+        if (e.getKey() == e.TAB) { // This was a pain in the ass to actually get it working right
+            // field.getEl().blur();
+            // field.getEl().focus(50);
+            // field.doQuery( field.getValue() );
+            
+            /* allow the user to insert tabs */
+            var el = field.el.dom;
+            var startPos = el.selectionStart;
+            var endPos = el.selectionEnd;
+            var value = field.getValue();
+            field.setValue(
+                value.substring(0, el.selectionStart)
+                + '\t'
+                + value.substring(el.selectionEnd, value.length)
+            );
+            e.stopEvent();
+            return false;
+        }
     }
-  }
 });
 
 Ext.reg('metriccompleter', MetricCompleter);
