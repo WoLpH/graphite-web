@@ -88,15 +88,48 @@ GraphiteComposer.prototype = {
     }, this);
   },
 
+  load: function(src){
+    Ext.Msg.wait('Loading...');
+
+    Ext.Ajax.request({
+        url: src,
+        success: function(response, options){
+            var img = this.window.getImage();
+            if(img){
+                img.src = options.url;
+                img.onload = function(){Ext.Msg.hide()};
+                img.onerror = Ext.Msg.hide;
+            }
+        },
+        failure: function(response, options){
+            var root = document.createElement('div');
+            root.innerHTML = response.responseText;
+            var pre = root.getElementsByTagName('pre');
+            var error = '<h3>Unknown error</h3>';
+
+            if(pre && pre.length){
+                error = '<pre>' + pre[0].innerHTML + '</pre>';
+            }
+            error += 'click <a target="_blank" href="' + options.url + '">here</a> for more information';
+
+            Ext.Msg.show({
+                title: 'Unable to load',
+                msg: error,
+                minWidth: 900,
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+        },
+        scope: this
+    });
+  },
+
   updateImage: function () {
     /* Set the image's url to reflect this.url's current params */
-    var img = this.window.getImage();
-    if (img) {
-      var now = new Date();
-      var unixTime = now.valueOf() / 1000;
-      this.url.setParam('_salt', unixTime.toString() );
-      img.src = this.url.getURL();
-    }
+    var now = new Date();
+    var unixTime = now.valueOf() / 1000;
+    this.url.setParam('_salt', unixTime.toString() );
+    this.load(this.url.getURL());
   },
 
   parseDate: function(dateString) { // Format is HH:MM_YYYYMMDD
