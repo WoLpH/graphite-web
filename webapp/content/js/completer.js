@@ -57,6 +57,7 @@ MetricCompleter = Ext.extend(Ext.form.TextArea, {
                 + '  '
                 + value.substring(el.selectionEnd, value.length)
             );
+            el.setSelectionRange(startPos + 2, endPos + 2);
             e.stopEvent();
             return false;
         }else if(key == e.ENTER){
