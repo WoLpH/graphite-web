@@ -1378,6 +1378,20 @@ def sortByMinima(requestContext, seriesList):
   newSeries.sort(compare)
   return newSeries
 
+def top(requestContext, seriesList, n):
+    '''
+    Convenience function to combine `sortByMaxima` with `limit` so you get the
+    top `N` results.
+    '''
+    return limit(requestContext, sortByMaxima(requestContext, seriesList), n)
+
+def bottom(requestContext, seriesList, n):
+    '''
+    Convenience function to combine `sortByMaxima` with `limit` so you get the
+    bottom `N` results.
+    '''
+    return limit(requestContext, sortByMinima(requestContext, seriesList), n)
+
 def mostDeviant(requestContext, n, seriesList):
   """
   Takes an integer N followed by one metric or a wildcard seriesList.

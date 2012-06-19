@@ -10,3 +10,4 @@ def server_error(request, template_name='500.html'):
     'stacktrace' : traceback.format_exc()
   })
   return HttpResponseServerError( template.render(context) )
+
