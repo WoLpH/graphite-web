@@ -967,8 +967,8 @@ function createFunctionsMenu() {
     }, {
       text: 'Filter',
       menu: [
-        {text: 'top', handler: applyFuncToEachWithInput('limit', 'Limit to the top ___ of a list of metrics')},
-        {text: 'bottom', handler: applyFuncToEachWithInput('limit', 'Limit to the bottom ___ of a list of metrics')},
+        {text: 'top', handler: applyFuncToEachWithInput('top', 'Limit to the top ___ of a list of metrics')},
+        {text: 'bottom', handler: applyFuncToEachWithInput('bottom', 'Limit to the bottom ___ of a list of metrics')},
         {
           text: 'Data Filters',
           menu: [

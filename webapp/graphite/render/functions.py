@@ -2428,6 +2428,8 @@ SeriesFunctions = {
   'maximumBelow' : maximumBelow,
   'nPercentile' : nPercentile,
   'limit' : limit,
+  'top' : top,
+  'bottom' : bottom,
   'sortByMaxima' : sortByMaxima,
   'sortByMinima' : sortByMinima,
   'exclude' : exclude,
