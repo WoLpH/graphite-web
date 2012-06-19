@@ -45,11 +45,8 @@ MetricCompleter = Ext.extend(Ext.form.TextArea, {
     },
 
     onSpecialKey: function (field, e) {
-        if (e.getKey() == e.TAB) { // This was a pain in the ass to actually get it working right
-            // field.getEl().blur();
-            // field.getEl().focus(50);
-            // field.doQuery( field.getValue() );
-            
+        var key = e.getKey();
+        if(key == e.TAB){
             /* allow the user to insert tabs */
             var el = field.el.dom;
             var startPos = el.selectionStart;
@@ -57,8 +54,18 @@ MetricCompleter = Ext.extend(Ext.form.TextArea, {
             var value = field.getValue();
             field.setValue(
                 value.substring(0, el.selectionStart)
-                + '\t'
+                + '  '
                 + value.substring(el.selectionEnd, value.length)
+            );
+            e.stopEvent();
+            return false;
+        }else if(key == e.ENTER){
+            var value = field.getValue();
+            braces = value.match(/\(/g).length - value.match(/\)/g).length;
+            field.setValue(
+                value
+                + '\n'
+                + Array(braces + 1).join('  ')
             );
             e.stopEvent();
             return false;
